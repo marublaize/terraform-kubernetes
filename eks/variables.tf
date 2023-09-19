@@ -1,7 +1,3 @@
-variable "aws_region" {
-  description = "AWS region"
-}
-
 variable "cluster_name" {
   description = "Name for the EKS cluster"
 }
