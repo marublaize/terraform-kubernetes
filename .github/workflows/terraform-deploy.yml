@@ -1,0 +1,44 @@
+name: Terraform Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      destroy-resources:
+        description: 'Set to "true" to destroy resources'
+        required: false
+        default: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform CLI
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.5.7  # Adjust the Terraform version as needed
+
+      - name: Configure Terraform Cloud
+        run: |
+          terraform login \
+            -token=${{ secrets.TF_API_TOKEN }} \
+            -org=${{ secrets.TF_ORG_NAME }} \
+            -name=github-actions
+          terraform init -backend-config="organization=${{ secrets.TF_ORG_NAME }}"
+
+      - name: Terraform Plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+
+      - name: Terraform Show Outputs
+        run: terraform output
+
+      - name: Terraform Destroy (Conditional)
+        if: ${{ github.event.inputs.destroy-resources == 'true' }}
+        run: terraform destroy -auto-approve
+

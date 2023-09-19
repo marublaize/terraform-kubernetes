@@ -1,0 +1,10 @@
+aws_region                  = "us-east-1"  
+vpc_cidr_block              = "10.0.0.0/16"
+private_subnet_cidr_blocks  = ["10.0.1.0/24", "10.0.2.0/24"]
+availability_zones          = ["us-east-1a", "us-east-1b"]
+worker_node_desired_size    = 1
+worker_node_min_size        = 1
+worker_node_max_size        = 3
+cluster_name                = "eks-cluster"     # Your EKS cluster name
+worker_node_group_name      = "worker-nodes"    # Your worker node group name
+worker_node_ssh_key         = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2P8R2..." # Your SSH key
